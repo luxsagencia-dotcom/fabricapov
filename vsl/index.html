@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fábrica POV | Crie a sua série animada em POV</title>
+<meta name="description" content="O kit para criar a sua própria série animada em POV. Sem aparecer, sem desenhar e sem editar vídeo.">
+<meta name="theme-color" content="#0c1020">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fábrica POV | Crie a sua série animada em POV">
+<meta property="og:description" content="O kit para criar a sua própria série animada em POV. Sem aparecer, sem desenhar e sem editar vídeo. R$ 27, com 7 dias de garantia.">
+<meta property="og:url" content="https://fabricapov.site/vsl/">
+<meta property="og:image" content="https://fabricapov.netlify.app/midia/og-fabrica-pov.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<script>
+/* ===== FÁBRICA POV · PÁGINA VSL: SÓ EDITAR AQUI ===== */
+// 1. ID do vídeo no YouTube (a parte depois de watch?v= ou youtu.be/). Vazio = mostra um quadro "vídeo em breve".
+const VSL_YOUTUBE_ID = "";
+// 2. Checkout e pixel (os mesmos da página principal).
+const CHECKOUT_URL = "https://pay.kiwify.com.br/lNbVr9z";
+const META_PIXEL_ID = "3043450972682329";
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+
+<style>
+:root{--noite:#0c1020;--breu:#0d0c0a;--texto:#dde2ee;--apagado:#a2acc6;--vermelho:#e0241b;--azul:#1f6fe0;--amarelo:#ffd83d;--raio:18px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;background:var(--noite);color:var(--texto);font:500 16px/1.46 "Inter",system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amarelo);outline-offset:3px;border-radius:6px}
+
+#faixa-promo{background:#000;color:#fff;text-align:center;font-weight:800;font-size:13.5px;padding:9px 12px;border-bottom:2px solid var(--amarelo);letter-spacing:.02em}
+#faixa-promo b{color:var(--amarelo)}
+
+main{flex:1;position:relative;overflow:hidden;padding:26px 16px 36px}
+main .fundo{position:absolute;inset:-40px;background:url("https://fabricapov.netlify.app/midia/portaria-poster.webp") center 30%/cover no-repeat;filter:blur(30px) saturate(1.15);opacity:.45;transform:scale(1.15)}
+main::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,16,32,.35) 0,rgba(12,16,32,.7) 40%,var(--noite) 90%)}
+.dentro{position:relative;z-index:1;max-width:760px;margin:0 auto;text-align:center}
+
+.legenda{font-weight:800;color:#fff;letter-spacing:-.015em;line-height:1.08;
+  text-shadow:.085em 0 0 var(--breu),-.085em 0 0 var(--breu),0 .085em 0 var(--breu),0 -.085em 0 var(--breu),
+  .06em .06em 0 var(--breu),-.06em .06em 0 var(--breu),.06em -.06em 0 var(--breu),-.06em -.06em 0 var(--breu),
+  0 .19em 0 rgba(0,0,0,.6)}
+h1{font-size:clamp(28px,7.5vw,46px);margin-bottom:10px;text-wrap:balance}
+.lema{font-weight:800;color:var(--amarelo);font-size:clamp(15px,4.2vw,19px);line-height:1.25;margin-bottom:22px;text-shadow:0 2px 0 var(--breu)}
+
+.vsl{aspect-ratio:16/9;width:100%;border:4px solid var(--breu);border-radius:20px;overflow:hidden;background:#05070d;
+  box-shadow:0 10px 0 rgba(0,0,0,.45),0 0 0 2px #ffb000,0 0 70px -10px rgba(255,150,0,.55);margin-bottom:26px}
+.vsl iframe{width:100%;height:100%;border:0;display:block}
+.vsl .vazio{height:100%;display:flex;align-items:center;justify-content:center;color:var(--apagado);font-weight:800}
+
+.voto{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;max-width:520px;margin:0 auto;min-height:66px;padding:12px 20px;border:4px solid var(--breu);border-radius:var(--raio);box-shadow:0 6px 0 var(--breu);background:var(--vermelho);color:#fff;text-decoration:none;cursor:pointer;transition:transform .08s,box-shadow .08s}
+.voto b{font-size:clamp(20px,5.6vw,25px);line-height:1.05;text-transform:uppercase;letter-spacing:-.01em}
+.voto small{font-size:14.5px;opacity:.95}
+.voto:active{transform:translateY(4px);box-shadow:0 2px 0 var(--breu)}
+@media (hover:hover){.voto:hover{transform:translateY(-2px);box-shadow:0 8px 0 var(--breu)}}
+.peq{font-size:13.5px;color:var(--apagado);margin-top:12px}
+
+footer{font-size:12.5px;color:var(--apagado);text-align:center;padding:16px}
+#cookies{position:fixed;left:12px;right:12px;bottom:12px;z-index:30;background:#fff;color:#14161c;border:3px solid var(--breu);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:520px;margin:0 auto}
+#cookies a{color:#14161c}
+#cookies div{display:flex;gap:10px;margin-top:10px}
+#cookies button{flex:1;font:800 15px/1 "Inter",system-ui,sans-serif;padding:12px;border-radius:10px;border:2px solid var(--breu);background:#fff;color:#14161c;cursor:pointer}
+#cookies button[data-v="sim"]{background:var(--azul);color:#fff}
+</style>
+</head>
+<body>
+<div id="faixa-promo">PROMOÇÃO DE LANÇAMENTO · de <s>R$&nbsp;47</s> por <b>R$&nbsp;27</b></div>
+
+<main>
+  <div class="fundo" aria-hidden="true"></div>
+  <div class="dentro">
+    <h1 class="legenda">Crie a sua própria série animada em POV</h1>
+    <p class="lema">Sem aparecer. Sem desenhar. Sem editar vídeo.</p>
+    <div class="vsl" id="vsl"></div>
+    <a class="voto" data-comprar href="#"><b>Quero o kit ·&nbsp;R$&nbsp;27</b><small>de <s>R$&nbsp;47</s> por R$&nbsp;27</small></a>
+    <p class="peq">Pagamento único · 7 dias de garantia</p>
+  </div>
+</main>
+
+<footer>Fábrica POV · Pagamento e entrega pela Kiwify · <a href="/privacidade">Política de privacidade</a></footer>
+
+<script>
+(function () {
+  /* vídeo */
+  var box = document.getElementById('vsl');
+  if (VSL_YOUTUBE_ID.trim()) {
+    box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(VSL_YOUTUBE_ID.trim()) +
+      '?rel=0&modestbranding=1&playsinline=1" title="Vídeo da Fábrica POV" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  } else {
+    box.innerHTML = '<div class="vazio">Vídeo em breve</div>';
+  }
+
+  /* checkout com as UTMs da URL */
+  var qs = location.search.replace(/^\?/, '');
+  var destino = CHECKOUT_URL + (qs ? (CHECKOUT_URL.indexOf('?') > -1 ? '&' : '?') + qs : '');
+  document.querySelectorAll('[data-comprar]').forEach(function (a) {
+    a.href = destino;
+    a.addEventListener('click', function () { if (window.fbq) fbq('trackCustom', 'CliqueBotaoVSL'); });
+  });
+
+  /* pixel: só depois do aceite (mesma chave da página principal) */
+  var CHAVE = 'fabricapov_cookies';
+  function carregaPixel() {
+    if (window.fbq) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentElement.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('set', 'autoConfig', false, META_PIXEL_ID);
+    fbq('init', META_PIXEL_ID);
+    fbq('trackCustom', 'PageVSL');
+  }
+  function le() { try { return localStorage.getItem(CHAVE); } catch (e) { return null; } }
+  function grava(v) { try { localStorage.setItem(CHAVE, v); } catch (e) {} }
+  var v = le();
+  if (v === 'sim') carregaPixel();
+  else if (v !== 'nao') {
+    var d = document.createElement('div');
+    d.id = 'cookies'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Preferências de cookies');
+    d.innerHTML = '<p>Com a sua permissão, usamos cookies de medição e publicidade da Meta para saber se esta página funciona. <a href="/privacidade">Política de privacidade</a></p><div><button type="button" data-v="nao">Recusar</button><button type="button" data-v="sim">Aceitar</button></div>';
+    d.addEventListener('click', function (e) {
+      var r = e.target.getAttribute && e.target.getAttribute('data-v'); if (!r) return;
+      grava(r); d.remove(); if (r === 'sim') carregaPixel();
+    });
+    document.body.appendChild(d);
+  }
+})();
+</script>
+</body>
+</html>
