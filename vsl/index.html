@@ -15,8 +15,10 @@
 
 <script>
 /* ===== FÁBRICA POV · PÁGINA VSL: SÓ EDITAR AQUI ===== */
-// 1. ID do vídeo no YouTube (a parte depois de watch?v= ou youtu.be/). Vazio = mostra um quadro "vídeo em breve".
-const VSL_YOUTUBE_ID = "JYeVqUWvsDk";
+// 1. Vídeo da VSL: arquivo nesta mesma pasta (vsl/). Vazio = mostra um quadro "vídeo em breve".
+//    Fica no próprio site (não no YouTube) porque no iPhone e no navegador do Instagram o YouTube não toca pelo nosso botão.
+const VSL_VIDEO = "vsl.mp4";
+const VSL_CAPA = "vsl-capa.jpg";   // imagem que aparece antes do play
 // O botão aparece quando a pessoa chegar nesta parte do vídeo (0.5 = metade).
 const BOTAO_APARECE_EM = 0;   // 0 = aparece logo ao abrir a página
 // 2. Checkout e pixel (os mesmos da página principal).
@@ -55,12 +57,11 @@ h1{font-size:clamp(28px,7.5vw,46px);margin-bottom:10px;text-wrap:balance}
 .vsl{aspect-ratio:16/9;width:100%;border:4px solid var(--breu);border-radius:20px;overflow:hidden;background:#05070d;
   box-shadow:0 10px 0 rgba(0,0,0,.45),0 0 0 2px #ffb000,0 0 70px -10px rgba(255,150,0,.55);margin-bottom:26px}
 .vsl{position:relative}
-/* o iframe não recebe toque nem mouse: a barra e a marca do YouTube não aparecem */
-.vsl .yt{position:absolute;inset:0;pointer-events:none}
-.vsl .yt iframe{width:100%;height:100%;border:0;display:block}
+/* vídeo do próprio site, sem barra nem controles do navegador */
+.vsl video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#05070d}
 .vsl .vazio{height:100%;display:flex;align-items:center;justify-content:center;color:var(--apagado);font-weight:800}
-/* camada nossa por cima: capa + play próprio, e clique para pausar */
-.vsl .capa{position:absolute;inset:0;z-index:2;border:0;padding:0;cursor:pointer;background:#05070d center/cover no-repeat;display:flex;align-items:center;justify-content:center}
+/* camada nossa por cima: play próprio, e clique para pausar */
+.vsl .capa{position:absolute;inset:0;z-index:2;border:0;padding:0;cursor:pointer;background:rgba(5,7,13,.15);display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
 .vsl .capa.tocando{background:transparent}
 .vsl .capa.tocando .play{display:none}
 .vsl .capa.mudo::after{content:"🔊 Toque para ativar o som";position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:var(--vermelho);color:#fff;font:800 14px/1 "Inter",system-ui,sans-serif;padding:10px 14px;border:3px solid var(--breu);border-radius:12px;white-space:nowrap}
@@ -132,56 +133,39 @@ footer{font-size:12.5px;color:var(--apagado);text-align:center;padding:16px}
   try { if (localStorage.getItem(CHAVE_VIU)) mostraBotao(); } catch (e) {}
   if (BOTAO_APARECE_EM <= 0) setTimeout(mostraBotao, 1700);
 
-  /* vídeo: player do YouTube escondido atrás da nossa capa */
+  /* vídeo: arquivo do próprio site, com o nosso play por cima */
   var box = document.getElementById('vsl');
-  var ID = VSL_YOUTUBE_ID.trim();
-  if (!ID) { box.innerHTML = '<div class="vazio">Vídeo em breve</div>'; mostraBotao(); }
+  var SRC = VSL_VIDEO.trim();
+  if (!SRC) { box.innerHTML = '<div class="vazio">Vídeo em breve</div>'; mostraBotao(); }
   else {
-    box.innerHTML = '<div class="yt"><div id="player"></div></div>' +
-      '<button class="capa" id="capa" type="button" aria-label="Assistir o vídeo" style="background-image:url(https://i.ytimg.com/vi/' + ID + '/hqdefault.jpg)"><span class="play"></span></button>';
-    var capa = document.getElementById('capa');
-    var viu80 = false, player, pronto = false, timer, pediuPausa = false, clicouEm = 0;
-    window.onYouTubeIframeAPIReady = function () {
-      player = new YT.Player('player', {
-        videoId: ID,
-        host: 'https://www.youtube-nocookie.com',
-        playerVars: { controls: 0, rel: 0, modestbranding: 1, playsinline: 1, disablekb: 1, fs: 0, iv_load_policy: 3 },
-        events: {
-          onReady: function () { pronto = true; },
-          onStateChange: function (e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              capa.classList.add('tocando');
-              clearInterval(timer);
-              timer = setInterval(function () {
-                var d = player.getDuration(), t = player.getCurrentTime();
-                if (d && t / d >= BOTAO_APARECE_EM) mostraBotao();
-                if (d && t / d >= 0.8 && !viu80) { viu80 = true; if (window.fbq) fbq('trackCustom', 'ViewVSL'); }
-              }, 500);
-            } else {
-              clearInterval(timer);
-              /* pausou sozinho logo após o play = navegador bloqueou o som: toca mudo e pede um toque */
-              if (e.data === YT.PlayerState.PAUSED && !pediuPausa && Date.now() - clicouEm < 4000 && !player.isMuted()) {
-                player.mute(); player.playVideo(); capa.classList.add('mudo'); return;
-              }
-              if (e.data === YT.PlayerState.ENDED) { if (!viu80) { viu80 = true; if (window.fbq) fbq('trackCustom', 'ViewVSL'); } mostraBotao(); player.seekTo(0); player.pauseVideo(); }
-              if (e.data !== YT.PlayerState.BUFFERING) capa.classList.remove('tocando');
-            }
-          }
-        }
-      });
-    };
-    capa.addEventListener('click', function () {
-      if (!pronto) return;
-      if (player.isMuted() && player.getPlayerState() === YT.PlayerState.PLAYING) { player.unMute(); capa.classList.remove('mudo'); return; }
-      if (player.getPlayerState() === YT.PlayerState.PLAYING) { pediuPausa = true; player.pauseVideo(); return; }
-      pediuPausa = false; clicouEm = Date.now();
-      player.unMute(); player.playVideo();
+    box.innerHTML = '<video id="video" playsinline webkit-playsinline preload="metadata"' +
+      (VSL_CAPA ? ' poster="' + VSL_CAPA + '"' : '') + ' src="' + SRC + '"></video>' +
+      '<button class="capa" id="capa" type="button" aria-label="Assistir o vídeo"><span class="play"></span></button>';
+    var video = document.getElementById('video'), capa = document.getElementById('capa');
+    var viu80 = false;
+    function marca80() { if (viu80) return; viu80 = true; if (window.fbq) fbq('trackCustom', 'ViewVSL'); }
+    video.addEventListener('playing', function () { capa.classList.add('tocando'); });
+    video.addEventListener('pause', function () { capa.classList.remove('tocando'); });
+    video.addEventListener('timeupdate', function () {
+      var d = video.duration, t = video.currentTime;
+      if (d && t / d >= BOTAO_APARECE_EM) mostraBotao();
+      if (d && t / d >= 0.8) marca80();
     });
-    var s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api';
-    s.onerror = function () { mostraBotao(); };
-    document.head.appendChild(s);
-    /* segurança: se o player não carregar em 10 s, o botão aparece mesmo assim */
-    setTimeout(function () { if (!pronto) mostraBotao(); }, 10000);
+    video.addEventListener('ended', function () { marca80(); mostraBotao(); capa.classList.remove('tocando', 'mudo'); video.currentTime = 0; });
+    video.addEventListener('error', function () { mostraBotao(); });
+    capa.addEventListener('click', function () {
+      if (!video.paused && video.muted) { video.muted = false; capa.classList.remove('mudo'); return; }
+      if (!video.paused) { video.pause(); return; }
+      video.muted = false;
+      var p = video.play();
+      /* se o navegador não deixar tocar com som, toca mudo e pede um toque para ligar o som */
+      if (p && p.catch) p.catch(function () {
+        video.muted = true; capa.classList.add('mudo');
+        var p2 = video.play(); if (p2 && p2.catch) p2.catch(function () { capa.classList.remove('mudo'); });
+      });
+    });
+    /* segurança: se o vídeo não carregar em 10 s, o botão aparece mesmo assim */
+    setTimeout(function () { if (video.readyState < 1) mostraBotao(); }, 10000);
   }
 
   /* checkout com as UTMs da URL */
